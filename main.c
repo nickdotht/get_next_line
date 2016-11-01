@@ -17,7 +17,6 @@ int        main(int argc, char **argv)
   {
       ft_putendl(line);
       free(line);
-      break;
   }
   if (argc == 2)
     close(fd);
