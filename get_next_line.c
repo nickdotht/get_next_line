@@ -61,7 +61,9 @@ int		get_next_line(const int fd, char **line)
 		curr_line = ft_strjoin(curr_line, buf);
 	}
 	*line = ft_strjoin(*line, curr_line);
-	if (!ft_strlen(rest_str) && ret < BUFF_SIZE)
+	if (ret < BUFF_SIZE)
+	{
 		return (0);
+	}
 	return (1);
 }

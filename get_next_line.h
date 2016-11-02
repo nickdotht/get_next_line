@@ -10,12 +10,17 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
-#include <stdlib.h>
-#include <unistd.h>
+#ifndef GET_NEXT_LINE_H
+#define GET_NEXT_LINE_H
+# include <libft.h>
+# include <stdlib.h>
+# include <unistd.h>
 
-#  include <stdio.h>
+# include <stdio.h>
 
-#define BUFF_SIZE 1
+# define BUFF_SIZE 2
+
+# define MALLCHECK(x) if (!x) return (NULL);
 
 int		get_next_line(const int fd, char **line);
+#endif
