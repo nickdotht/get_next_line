@@ -16,9 +16,9 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-# include <stdio.h>
+#  include <stdio.h>
 
-# define BUFF_SIZE 2
+# define BUFF_SIZE 1
 
 # define MALLCHECK(x) if (!x) return (NULL);
 

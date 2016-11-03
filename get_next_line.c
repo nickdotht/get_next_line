@@ -14,13 +14,17 @@
 
 int		get_next_line(const int fd, char **line)
 {
-	static int		ret;
+	static int		ret = BUFF_SIZE;
 	char					buf[BUFF_SIZE + 1];
 	char					*curr_line;
 	int						i;
 	static char		*rest_str;
 	char					*tmp;
 
+	if (ret < BUFF_SIZE)
+	{
+		return (0);
+	}
 	curr_line = ft_strnew(1);
 	*line = ft_strnew(1);
 	tmp = ft_strnew(1);
@@ -41,8 +45,13 @@ int		get_next_line(const int fd, char **line)
 				rest_str = ft_strnew(1);
 		}
 		else
+		{
 			curr_line = ft_strjoin(curr_line, rest_str);
+			rest_str = ft_strnew(1);
+		}
 	}
+	else
+		rest_str = ft_strnew(1);
 	while ( (ret = read(fd, buf, BUFF_SIZE)) )
 	{
 		buf[ret] = '\0';
@@ -52,18 +61,12 @@ int		get_next_line(const int fd, char **line)
 			while (buf[i] && buf[i] != '\n')
 				curr_line = ft_strjoinch(curr_line, buf[i++]);
 			if (buf[i + 1])
-			{
 				while (buf[++i])
 					rest_str = ft_strjoinch(rest_str, buf[i]);
-			}
 			break;
 		}
 		curr_line = ft_strjoin(curr_line, buf);
 	}
 	*line = ft_strjoin(*line, curr_line);
-	if (ret < BUFF_SIZE)
-	{
-		return (0);
-	}
 	return (1);
 }
