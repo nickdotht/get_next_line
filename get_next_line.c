@@ -23,9 +23,7 @@ int		get_next_line(const int fd, char **line)
 	int						complete;
 
 	if (ret < BUFF_SIZE && (rest_str && !ft_strlen(rest_str)))
-	{
 		return (0);
-	}
 	complete = 0;
 	MALLCHECK( (curr_line = ft_strnew(1)) );
 	MALLCHECK( (*line = ft_strnew(1)) );
@@ -56,12 +54,9 @@ int		get_next_line(const int fd, char **line)
 	}
 	else
 		MALLCHECK( (rest_str = ft_strnew(1)) );
-	printf("CURRLINEBEFORE%sCURRLINEBEFOREEND\n", curr_line);
-	printf("ISCOMPLETE%dISCOMPLETE\n", complete);
 	while ( !complete && (ret = read(fd, buf, BUFF_SIZE)) )
 	{
 		buf[ret] = '\0';
-		printf("\nBUFSIZEINSIDE%sBUFSIZEINSIDEEND\n", buf);
 		if (ft_strchr(buf, '\n') != NULL)
 		{
 			i = 0;
@@ -75,8 +70,8 @@ int		get_next_line(const int fd, char **line)
 		}
 		MALLCHECK( (curr_line = ft_strjoin(curr_line, buf)) );
 	}
-	printf("\nRESTSTRINGOUTSIDE%sRESTSTRINGOUTSIDEEND\n", rest_str);
-	printf("\nCURRLINEOUTSIDE%sCURRLINEOUTSIDEEND\n", curr_line);
+	if (!ret)
+		return (0);
 	MALLCHECK( (*line = ft_strjoin(*line, curr_line)) );
 	return (1);
 }
