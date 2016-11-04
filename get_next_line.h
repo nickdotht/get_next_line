@@ -18,9 +18,9 @@
 
 #  include <stdio.h>
 
-# define BUFF_SIZE 1
+# define BUFF_SIZE 4
 
-# define MALLCHECK(x) if (!x) return (NULL);
+# define MALLCHECK(x) if (!x) return (-1);
 
 int		get_next_line(const int fd, char **line);
 #endif
