@@ -23,7 +23,10 @@ int		get_next_line(const int fd, char **line)
 	int						complete;
 
 	if (ret < BUFF_SIZE && (rest_str && !ft_strlen(rest_str)))
+	{
+		MALLCHECK( (*line = ft_strnew(1)) );
 		return (0);
+	}
 	complete = 0;
 	MALLCHECK( (curr_line = ft_strnew(1)) );
 	MALLCHECK( (*line = ft_strnew(1)) );
@@ -42,6 +45,7 @@ int		get_next_line(const int fd, char **line)
 					MALLCHECK( (tmp = ft_strjoinch(tmp, rest_str[i])) );
 				MALLCHECK( (rest_str = ft_strnew(ft_strlen(tmp))) );
 				MALLCHECK( (rest_str = ft_strdup(tmp)) );
+				free(tmp);
 			}
 			else
 				MALLCHECK( (rest_str = ft_strnew(1)) );
@@ -56,6 +60,7 @@ int		get_next_line(const int fd, char **line)
 		MALLCHECK( (rest_str = ft_strnew(1)) );
 	while ( !complete && (ret = read(fd, buf, BUFF_SIZE)) )
 	{
+		// printf("\ninside buf is %s\n", buf);
 		buf[ret] = '\0';
 		if (ft_strchr(buf, '\n') != NULL)
 		{
@@ -70,8 +75,7 @@ int		get_next_line(const int fd, char **line)
 		}
 		MALLCHECK( (curr_line = ft_strjoin(curr_line, buf)) );
 	}
-	if (!ret)
-		return (0);
 	MALLCHECK( (*line = ft_strjoin(*line, curr_line)) );
+	free(curr_line);
 	return (1);
 }
