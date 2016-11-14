@@ -18,7 +18,7 @@
 
 #  include <stdio.h>
 
-# define BUFF_SIZE 1000000
+# define BUFF_SIZE 42
 
 # define MALLCHECK(x) if (!x) return (-1);
 

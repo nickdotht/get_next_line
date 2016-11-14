@@ -14,68 +14,67 @@
 
 int		get_next_line(const int fd, char **line)
 {
-	static int		ret = BUFF_SIZE;
+	static int		ret;
 	char					buf[BUFF_SIZE + 1];
 	char					*curr_line;
 	int						i;
-	static char		*rest_str;
+	static char		*rest_str = NULL;
 	char					*tmp;
 	int						complete;
 
-	if (ret < BUFF_SIZE && (rest_str && !ft_strlen(rest_str)))
-	{
-		MALLCHECK( (*line = ft_strnew(1)) );
-		return (0);
-	}
 	complete = 0;
-	MALLCHECK( (curr_line = ft_strnew(1)) );
-	MALLCHECK( (*line = ft_strnew(1)) );
-	MALLCHECK( (tmp = ft_strnew(1)) );
+	MALLCHECK((curr_line = ft_strnew(1)));
+	MALLCHECK((*line = ft_strnew(1)));
+	MALLCHECK((tmp = ft_strnew(1)));
 	if (rest_str && ft_strlen(rest_str))
 	{
 		if (ft_strchr(rest_str, '\n') != NULL)
 		{
 			i = 0;
 			while (rest_str[i] && rest_str[i] != '\n')
-				MALLCHECK( (curr_line = ft_strjoinch(curr_line, rest_str[i++])) );
+				MALLCHECK((curr_line = ft_strjoinch(curr_line, rest_str[i++])));
 			complete = 1;
 			if (rest_str[i + 1])
 			{
 				while (rest_str[++i])
-					MALLCHECK( (tmp = ft_strjoinch(tmp, rest_str[i])) );
-				MALLCHECK( (rest_str = ft_strnew(ft_strlen(tmp))) );
-				MALLCHECK( (rest_str = ft_strdup(tmp)) );
+					MALLCHECK((tmp = ft_strjoinch(tmp, rest_str[i])));
+				MALLCHECK((rest_str = ft_strnew(ft_strlen(tmp))));
+				MALLCHECK((rest_str = ft_strdup(tmp)));
 				free(tmp);
 			}
 			else
-				MALLCHECK( (rest_str = ft_strnew(1)) );
+				MALLCHECK((rest_str = ft_strnew(1)));
 		}
 		else
 		{
-			MALLCHECK( (curr_line = ft_strjoin(curr_line, rest_str)) );
-			MALLCHECK( (rest_str = ft_strnew(1)) );
+			MALLCHECK((curr_line = ft_strjoin(curr_line, rest_str)));
+			MALLCHECK((rest_str = ft_strnew(1)));
 		}
 	}
 	else
-		MALLCHECK( (rest_str = ft_strnew(1)) );
-	while ( !complete && (ret = read(fd, buf, BUFF_SIZE)) )
+		MALLCHECK((rest_str = ft_strnew(1)));
+	while (!complete && (ret = read(fd, buf, BUFF_SIZE)))
 	{
-		// printf("\ninside buf is %s\n", buf);
 		buf[ret] = '\0';
 		if (ft_strchr(buf, '\n') != NULL)
 		{
 			i = 0;
 			while (buf[i] && buf[i] != '\n')
-				MALLCHECK( (curr_line = ft_strjoinch(curr_line, buf[i++])) );
+				MALLCHECK((curr_line = ft_strjoinch(curr_line, buf[i++])));
 			complete = 1;
 			if (buf[i + 1])
 				while (buf[++i])
-					MALLCHECK( (rest_str = ft_strjoinch(rest_str, buf[i])) );
-			break;
+					MALLCHECK((rest_str = ft_strjoinch(rest_str, buf[i])));
+			if (!ret && !ft_strlen(rest_str))
+			{
+				free(rest_str);
+				return (0);
+			}
+			break ;
 		}
-		MALLCHECK( (curr_line = ft_strjoin(curr_line, buf)) );
+		MALLCHECK((curr_line = ft_strjoin(curr_line, buf)));
 	}
-	MALLCHECK( (*line = ft_strjoin(*line, curr_line)) );
+	MALLCHECK((*line = ft_strjoin(*line, curr_line)));
 	free(curr_line);
 	return (1);
 }
