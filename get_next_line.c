@@ -6,7 +6,7 @@
 /*   By: jrameau <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/29 22:52:30 by jrameau           #+#    #+#             */
-/*   Updated: 2016/09/29 22:52:33 by jrameau          ###   ########.fr       */
+/*   Updated: 2016/11/16 21:04:25 by jrameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,67 +14,89 @@
 
 int		get_next_line(const int fd, char **line)
 {
-	static int		ret;
-	char					buf[BUFF_SIZE + 1];
-	char					*curr_line;
-	int						i;
-	static char		*rest_str = NULL;
-	char					*tmp;
-	int						complete;
+	static int	ret;
+	char		buf[BUFF_SIZE + 1];
+	char		*curr;
+	int			i;
+	int			line_complete;
+	static char	*tmp_str;
+	char		*tmp_str2;
 
-	complete = 0;
-	MALLCHECK((curr_line = ft_strnew(1)));
+	printf("TEST MY ASS");
+	line_complete = 0;
+	MALLCHECK((curr = ft_strnew(1)));
 	MALLCHECK((*line = ft_strnew(1)));
-	MALLCHECK((tmp = ft_strnew(1)));
-	if (rest_str && ft_strlen(rest_str))
+
+	/*
+	 * If tmp_str has characters in it from previous reading
+	 * We check if it has a newline
+	 * If it does, we append all the characters that come before
+	 * the newline to curr and save the part that comes after it
+	 * back into tmp_str for later use.
+	*/
+	if (tmp_str && ft_strlen(tmp_str))
 	{
-		if (ft_strchr(rest_str, '\n') != NULL)
+		if (ft_strchr(tmp_str, '\n') == NULL)
 		{
-			i = 0;
-			while (rest_str[i] && rest_str[i] != '\n')
-				MALLCHECK((curr_line = ft_strjoinch(curr_line, rest_str[i++])));
-			complete = 1;
-			if (rest_str[i + 1])
-			{
-				while (rest_str[++i])
-					MALLCHECK((tmp = ft_strjoinch(tmp, rest_str[i])));
-				MALLCHECK((rest_str = ft_strnew(ft_strlen(tmp))));
-				MALLCHECK((rest_str = ft_strdup(tmp)));
-				free(tmp);
-			}
-			else
-				MALLCHECK((rest_str = ft_strnew(1)));
+			MALLCHECK((curr = ft_strjoin(curr, tmp_str)));
 		}
 		else
 		{
-			MALLCHECK((curr_line = ft_strjoin(curr_line, rest_str)));
-			MALLCHECK((rest_str = ft_strnew(1)));
+			MALLCHECK((tmp_str2 = ft_strnew(1)));
+			i = 0;
+			while (tmp_str[i] && tmp_str[i] != '\n')
+				MALLCHECK((curr = ft_strjoinch(curr, tmp_str[i])));
+			if (tmp_str[i] == '\n')
+				line_complete = 1;
+			while (tmp_str[++i])
+				MALLCHECK((tmp_str2 = ft_strjoinch(tmp_str2, tmp_str[i])));
+			MALLCHECK((tmp_str = ft_strnew(1)));
+			MALLCHECK((tmp_str = ft_strjoin(tmp_str, tmp_str2)));
+			free(tmp_str2);
 		}
 	}
-	else
-		MALLCHECK((rest_str = ft_strnew(1)));
-	while (!complete && (ret = read(fd, buf, BUFF_SIZE)))
+
+	/*
+	 *	If the buffer doesn't have a newline
+	 *	We simply add it all in curr. else,
+	 *	we append all the characters that come before
+	 *	the newline to curr and save the part that comes after it
+	 *	in a temporary variable for later use.
+	*/
+	while (!line_complete && (ret = read(fd, buf, BUFF_SIZE)))
 	{
 		buf[ret] = '\0';
-		if (ft_strchr(buf, '\n') != NULL)
+
+		if (ft_strchr(buf, '\n') == NULL)
 		{
+			MALLCHECK((curr = ft_strjoin(curr, buf)));
+			if (ret < BUFF_SIZE)
+				line_complete = 1;
+		}
+		else
+		{
+			MALLCHECK((tmp_str = ft_strnew(1)));
 			i = 0;
 			while (buf[i] && buf[i] != '\n')
-				MALLCHECK((curr_line = ft_strjoinch(curr_line, buf[i++])));
-			complete = 1;
-			if (buf[i + 1])
-				while (buf[++i])
-					MALLCHECK((rest_str = ft_strjoinch(rest_str, buf[i])));
-			if (!ret && !ft_strlen(rest_str))
-			{
-				free(rest_str);
-				return (0);
-			}
-			break ;
+				MALLCHECK((curr = ft_strjoinch(curr, buf[i++])));
+			if (buf[i] == '\n' || (!buf[i] && ret < BUFF_SIZE))
+				line_complete = 1;
+			while (buf[++i])
+				MALLCHECK((tmp_str = ft_strjoinch(tmp_str, buf[i])));
 		}
-		MALLCHECK((curr_line = ft_strjoin(curr_line, buf)));
 	}
-	MALLCHECK((*line = ft_strjoin(*line, curr_line)));
-	free(curr_line);
+	printf("\nLINE%sLINEEND\n", curr);
+
+	if (line_complete)
+		MALLCHECK((*line = ft_strjoin(*line, curr)));
+	free(curr);
+	printf("Does this work?");
+	if (ret < BUFF_SIZE)
+	{
+		if (tmp_str)
+			free(tmp_str);
+		return (0);
+	}
+	printf("WTF DUDE!");
 	return (1);
 }
