@@ -6,11 +6,41 @@
 /*   By: jrameau <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/29 22:52:30 by jrameau           #+#    #+#             */
-/*   Updated: 2016/11/23 06:06:22 by jrameau          ###   ########.fr       */
+/*   Updated: 2016/11/24 04:38:54 by jrameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+char	*ft_strnchr(char *s, char c, int offset)
+{
+	int		i;
+
+	i = -1;
+	while (s[++i])
+		if (s[i] == c)
+			return (s + i + offset);
+	return (NULL);
+}
+
+char	*copyuntil(char *s, char c)
+{
+	int		i;
+	int		count;
+	char	*s2;
+
+	i = -1;
+	count = -1;
+	while (s[++i])
+		if (s[i] == c)
+			break ;
+	if (!(s2 = ft_strnew(i)))
+		return (NULL);
+	while (++count < i)
+		if (!(s2 = ft_strjoinch(s2, s[count])))
+			return (NULL);
+	return (s2);
+}
 
 int		get_next_line(const int fd, char **line)
 {
@@ -28,11 +58,10 @@ int		get_next_line(const int fd, char **line)
 	MALLCHECK((*line = ft_strnew(1)));
 	if (ret && ret < BUFF_SIZE && tmp_str && tmp_str[0] == '\0')
 	{
-		free(tmp_str);
 		return (0);
 	}
 
-	printf("ret is %d\n", ret);
+	/* printf("ret is %d\n", ret); */
 
 	/*
 	 * If tmp_str has characters in it from previous reading
@@ -45,8 +74,8 @@ int		get_next_line(const int fd, char **line)
 	{
 		if (ft_strchr(tmp_str, '\n') == NULL)
 		{
-			MALLCHECK((curr = ft_strjoin(curr, tmp_str)));
-			MALLCHECK((tmp_str = ft_strnew(1)));
+			curr = tmp_str;
+			tmp_str = NULL;
 			/*
 			 * Find a way to set the line as complete here
 			 * if done reading the file
@@ -54,14 +83,9 @@ int		get_next_line(const int fd, char **line)
 		}
 		else
 		{
-			MALLCHECK((tmp_str2 = ft_strnew(1)));
-			i = 0;
-			while (tmp_str[i] && tmp_str[i] != '\n')
-				MALLCHECK((curr = ft_strjoinch(curr, tmp_str[i++])));
-			if (tmp_str[i] == '\n')
-				line_complete = 1;
-			while (tmp_str[++i])
-				MALLCHECK((tmp_str2 = ft_strjoinch(tmp_str2, tmp_str[i])));
+			tmp_str2 = ft_strnchr(tmp_str, '\n', 1);
+			MALLCHECK((curr = copyuntil(tmp_str, '\n')));
+			line_complete = 1;
 			tmp_str = tmp_str2;
 		}
 	}
@@ -79,17 +103,14 @@ int		get_next_line(const int fd, char **line)
 		if (ret < BUFF_SIZE)
 			line_complete = 1;
 		if (ft_strchr(buf, '\n') == NULL)
-		{
-			MALLCHECK((curr = ft_strjoin(curr, buf)));
-		}
+			curr = buf;
 		else
 		{
 			MALLCHECK((tmp_str = ft_strnew(1)));
 			i = 0;
-			while (buf[i] && buf[i] != '\n')
+			while (buf[i] != '\n')
 				MALLCHECK((curr = ft_strjoinch(curr, buf[i++])));
-			if (buf[i] == '\n' || (buf[i] == '\0' && ret < BUFF_SIZE))
-				line_complete = 1;
+			line_complete = 1;
 			while (buf[++i])
 				MALLCHECK((tmp_str = ft_strjoinch(tmp_str, buf[i])));
 		}
