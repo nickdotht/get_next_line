@@ -6,41 +6,11 @@
 /*   By: jrameau <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/29 22:52:30 by jrameau           #+#    #+#             */
-/*   Updated: 2016/11/24 04:38:54 by jrameau          ###   ########.fr       */
+/*   Updated: 2016/11/26 07:09:02 by jrameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-char	*ft_strnchr(char *s, char c, int offset)
-{
-	int		i;
-
-	i = -1;
-	while (s[++i])
-		if (s[i] == c)
-			return (s + i + offset);
-	return (NULL);
-}
-
-char	*copyuntil(char *s, char c)
-{
-	int		i;
-	int		count;
-	char	*s2;
-
-	i = -1;
-	count = -1;
-	while (s[++i])
-		if (s[i] == c)
-			break ;
-	if (!(s2 = ft_strnew(i)))
-		return (NULL);
-	while (++count < i)
-		if (!(s2 = ft_strjoinch(s2, s[count])))
-			return (NULL);
-	return (s2);
-}
 
 int		get_next_line(const int fd, char **line)
 {
@@ -51,13 +21,16 @@ int		get_next_line(const int fd, char **line)
 	int			line_complete;
 	static char	*tmp_str;
 	char		*tmp_str2;
+	static int	eof = 0;
 
 	/* ret = 0; */
 	line_complete = 0;
 	MALLCHECK((curr = ft_strnew(1)));
 	MALLCHECK((*line = ft_strnew(1)));
-	if (ret && ret < BUFF_SIZE && tmp_str && tmp_str[0] == '\0')
+	if (eof && ret && ret < BUFF_SIZE && tmp_str && tmp_str[0] == '\0')
 	{
+		free(curr);
+		free(tmp_str);
 		return (0);
 	}
 
@@ -80,11 +53,13 @@ int		get_next_line(const int fd, char **line)
 			 * Find a way to set the line as complete here
 			 * if done reading the file
 			*/
+			if (eof)
+				line_complete = 1;
 		}
 		else
 		{
 			tmp_str2 = ft_strnchr(tmp_str, '\n', 1);
-			MALLCHECK((curr = copyuntil(tmp_str, '\n')));
+			MALLCHECK((curr = ft_copyuntil(tmp_str, '\n')));
 			line_complete = 1;
 			tmp_str = tmp_str2;
 		}
@@ -101,9 +76,14 @@ int		get_next_line(const int fd, char **line)
 	{
 		buf[ret] = '\0';
 		if (ret < BUFF_SIZE)
+		{
 			line_complete = 1;
+			eof = 1;
+		}
 		if (ft_strchr(buf, '\n') == NULL)
-			curr = buf;
+		{
+			MALLCHECK((curr = ft_strjoin(curr, buf)));
+		}
 		else
 		{
 			MALLCHECK((tmp_str = ft_strnew(1)));

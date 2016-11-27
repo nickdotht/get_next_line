@@ -6,7 +6,7 @@
 /*   By: jrameau <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/21 21:30:24 by jrameau           #+#    #+#             */
-/*   Updated: 2016/09/24 04:12:58 by jrameau          ###   ########.fr       */
+/*   Updated: 2016/11/26 05:51:41 by jrameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,8 @@ char        *ft_strndup(const char *s1, size_t n);
 char        *ft_capitalize(char *s);
 t_list      *ft_lst_reverse(t_list *alst);
 void        *ft_realloc(void *ptr, size_t size);
-char				*ft_strjoinch(char const *s1, char c);
+char		*ft_strjoinch(char const *s1, char c);
+char		*ft_strnchr(char *s, char c, int offset);
+char		*ft_copyuntil(char *s, char c);
 
 #endif
