@@ -12,21 +12,25 @@
 
 #include "libft.h"
 
-char	*ft_copyuntil(char *s, char c)
+int			ft_copyuntil(char **dst, char *src, char c)
 {
 	int		i;
 	int		count;
-	char	*s2;
+	int		pos;
 
 	i = -1;
-	count = -1;
-	while (s[++i])
-		if (s[i] == c)
+	count = 0;
+	while (src[++i])
+		if (src[i] == c)
 			break ;
-	if (!(s2 = ft_strnew(i)))
-		return (NULL);
-	while (++count < i)
-		if (!(s2 = ft_strjoinch(s2, s[count])))
-			return (NULL);
-	return (s2);
+	pos = i;
+	if (!(*dst = ft_strnew(i)))
+		return (0);
+	while (src[count] && count < i)
+	{
+		if (!(*dst = ft_strjoinch(*dst, src[count])))
+			return (0);
+		count++;
+	}
+	return (pos);
 }

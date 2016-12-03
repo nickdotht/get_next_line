@@ -15,7 +15,7 @@ int        main(int argc, char **argv)
     return (2);
   while ((status = get_next_line(fd, &line)) == 1)
   {
-    ft_putendl(line);
+	  ft_putendl(line);
     free(line);
   }
   /* printf("\nStatus is %d\n", status); */

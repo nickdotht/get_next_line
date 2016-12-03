@@ -22,5 +22,12 @@
 
 # define MALLCHECK(x) if (!x) return (-1);
 
+typedef struct  s_file
+{
+  char          *content;
+  int           fd;
+  struct s_file *next;
+}               t_file;
+
 int		get_next_line(const int fd, char **line);
 #endif

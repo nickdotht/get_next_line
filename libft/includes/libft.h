@@ -119,8 +119,8 @@ char        *ft_strndup(const char *s1, size_t n);
 char        *ft_capitalize(char *s);
 t_list      *ft_lst_reverse(t_list *alst);
 void        *ft_realloc(void *ptr, size_t size);
-char		*ft_strjoinch(char const *s1, char c);
-char		*ft_strnchr(char *s, char c, int offset);
-char		*ft_copyuntil(char *s, char c);
+char				*ft_strjoinch(char const *s1, char c);
+char				*ft_strnchr(char *s, char c, int offset);
+int					ft_copyuntil(char **dst, char *src, char c);
 
 #endif
