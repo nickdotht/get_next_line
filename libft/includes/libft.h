@@ -96,10 +96,10 @@ int         ft_tolower(int c);
 
 typedef struct    s_list
 {
-	void      *content;
-	size_t      content_size;
-	struct s_list *next;
-}         t_list;
+	void      			*content;
+	size_t      		content_size;
+	struct s_list 	*next;
+}         				t_list;
 
 t_list      *ft_lstnew(const void *content, size_t content_size);
 void        ft_lstdelone(t_list **alst, void (*del)(void *, size_t));
@@ -122,5 +122,13 @@ void        *ft_realloc(void *ptr, size_t size);
 char				*ft_strjoinch(char const *s1, char c);
 char				*ft_strnchr(char *s, char c, int offset);
 int					ft_copyuntil(char **dst, char *src, char c);
+
+typedef struct  s_file
+{
+  char          *content;
+  int           fd;
+  struct s_file *next;
+}               t_file;
+t_file			*ft_filenew(void const *content, int fd);
 
 #endif

@@ -1,26 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_filenew.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jrameau <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/09/29 22:52:40 by jrameau           #+#    #+#             */
-/*   Updated: 2016/11/19 12:27:23 by jrameau          ###   ########.fr       */
+/*   Created: 2016/12/05 02:11:30 by jrameau           #+#    #+#             */
+/*   Updated: 2016/12/05 02:11:31 by jrameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-#define GET_NEXT_LINE_H
-# include <libft.h>
-# include <stdlib.h>
-# include <unistd.h>
+#include "libft.h"
 
-#  include <stdio.h>
+t_file	*ft_filenew(void const *content, int fd)
+{
+	t_file		*file;
 
-# define BUFF_SIZE 42
-
-# define MALLCHECK(x) if (!x) return (-1);
-
-int		get_next_line(const int fd, char **line);
-#endif
+	if (!(file = (t_file *)malloc(sizeof(*file))))
+		return (NULL);
+	if (!content)
+	{
+		file->content = NULL;
+		file->fd = fd;
+	}
+	else
+	{
+		if (!(file->content = malloc(fd)))
+			return (NULL);
+		ft_memcpy(file->content, content, fd);
+		file->fd = fd;
+	}
+	file->next = NULL;
+	return (file);
+}

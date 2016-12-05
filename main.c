@@ -18,7 +18,7 @@ int        main(int argc, char **argv)
 	  ft_putendl(line);
     free(line);
   }
-  /* printf("\nStatus is %d\n", status); */
+  // printf("\nStatus is %d\n", status);
   if (argc == 2)
     close(fd);
 }
