@@ -12,40 +12,31 @@
 
 #include "get_next_line.h"
 
-t_list	*get_correct_file(t_list *file, int fd)
+static void    get_correct_file(t_list **file, int fd)
 {
 	t_list		*tmp;
 
-	if (!file)
+	tmp = *file;
+	while (tmp)
 	{
-		tmp = ft_lstnew("\0", fd);
+		if ((int)tmp->content_size == fd)
+			return ;
+		tmp = tmp->next;
 	}
-	else
-	{
-		tmp = file;
-		while (tmp != NULL)
-		{
-			if ((int)tmp->content_size == fd)
-				return (tmp);
-			tmp = tmp->next;
-		}
-		tmp = ft_lstnew("\0", fd);
-		ft_lstadd(&file, tmp);
-		tmp = file;
-	}
-	return (tmp);
+	tmp = ft_lstnew("\0", fd);
+	ft_lstadd(file, tmp);
 }
 
-int		get_next_line(const int fd, char **line)
+int     get_next_line(const int fd, char **line)
 {
-	char			buf[BUFF_SIZE + 1];
+	char			    buf[BUFF_SIZE + 1];
 	static t_list	*file;
-	int				i;
-	int				ret;
+	int				    i;
+	int				    ret;
 
 	if ((fd < 0 || line == NULL || read(fd, buf, 0) < 0))
 		return (-1);
-	file = get_correct_file(file, fd);
+	get_correct_file(&file, fd);
 	*line = ft_strnew(1);
 	while ((ret = read(fd, buf, BUFF_SIZE)))
 	{
@@ -56,7 +47,7 @@ int		get_next_line(const int fd, char **line)
 	}
 	if (ret < BUFF_SIZE && !ft_strlen(file->content))
 		return (0);
-	i = ft_copyuntil(line, file->content, '\n');
-	file->content = file->content + (i + 1);
+  i = ft_copyuntil(line, file->content, '\n');
+  file->content = file->content + (i + 1);
 	return (1);
 }
