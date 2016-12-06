@@ -18,7 +18,7 @@ t_list	*get_correct_file(t_list *file, int fd)
 
 	if (!file)
 	{
-		tmp = ft_lstnew(NULL, fd);
+		tmp = ft_lstnew("\0", fd);
 	}
 	else
 	{
@@ -29,25 +29,34 @@ t_list	*get_correct_file(t_list *file, int fd)
 				return (tmp);
 			tmp = tmp->next;
 		}
-		tmp = ft_lstnew(NULL, fd);
-		tmp->next = file;
+		tmp = ft_lstnew("\0", fd);
+		ft_lstadd(&file, tmp);
+		tmp = file;
 	}
 	return (tmp);
 }
 
 int		get_next_line(const int fd, char **line)
 {
-	int				ret;
 	char			buf[BUFF_SIZE + 1];
-	int				i;
 	static t_list	*file;
+	int				i;
+	int				ret;
 
 	if ((fd < 0 || line == NULL || read(fd, buf, 0) < 0))
 		return (-1);
 	file = get_correct_file(file, fd);
-	MALLCHECK((*line = ft_strnew(1)));
-	
+	*line = ft_strnew(1);
+	while ((ret = read(fd, buf, BUFF_SIZE)))
+	{
+		buf[ret] = '\0';
+		MALLCHECK((file->content = ft_strjoin(file->content, buf)));
+		if (ft_strchr(buf, '\n'))
+			break ;
+	}
 	if (ret < BUFF_SIZE && !ft_strlen(file->content))
 		return (0);
+	i = ft_copyuntil(line, file->content, '\n');
+	file->content = file->content + (i + 1);
 	return (1);
 }
