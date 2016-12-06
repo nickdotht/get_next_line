@@ -6,7 +6,7 @@
 /*   By: jrameau <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/29 22:52:30 by jrameau           #+#    #+#             */
-/*   Updated: 2016/12/02 20:14:46 by jrameau          ###   ########.fr       */
+/*   Updated: 2016/12/06 02:53:47 by jrameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static t_list			*get_correct_file(t_list **file, int fd)
 {
-	t_list					*tmp;
+	t_list				*tmp;
 
 	tmp = *file;
 	while (tmp)
@@ -29,13 +29,13 @@ static t_list			*get_correct_file(t_list **file, int fd)
 	return (tmp);
 }
 
-int								get_next_line(const int fd, char **line)
+int						get_next_line(const int fd, char **line)
 {
-	char						buf[BUFF_SIZE + 1];
+	char				buf[BUFF_SIZE + 1];
 	static t_list		*file;
-	int							i;
-	int							ret;
-	t_list					*curr;
+	int					i;
+	int					ret;
+	t_list				*curr;
 
 	if ((fd < 0 || line == NULL || read(fd, buf, 0) < 0))
 		return (-1);
