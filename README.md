@@ -4,7 +4,7 @@ A C function that reads any valid file line by line until the end.
 
 ### TOC
 * [What is get_next_line?](#what-is-get_next_line)
-* [Why would I use/try it?](#why-would-i-use-try-it)
+* [Why would I use/try it?](#why-would-i-usetry-it)
 * [How do I use it?](#how-do-i-use-it)
 * [How do I try it out?](#how-do-i-try-it-out)
 	* [How do I test my own code?](#how-do-i-test-my-own-code)
@@ -13,7 +13,7 @@ A C function that reads any valid file line by line until the end.
 
 [get_next_line][1] is an individual project at [42][2] that basically reads a file line by line.
 
-Disclaimer: *There [are][10] [so][11] [many][12] [easier][13] methods of doing this by using standard functions in C. But the goal here is to be able to do it by using any functions from my [libft][14] and only the standard functions `read`, `malloc` and `free`.*
+Disclaimer: *There [are][10] [so][11] [many][12] [easier][13] methods of doing this by using standard C functions. But the goal here is to be able to do it by using any functions from my [libft][14] and only the standard functions `read`, `malloc` and `free`.*
 
 ### Why would I use/try it?
 
@@ -44,6 +44,8 @@ Get into it and build the library:
 	cd get_next_line
 	make -C libft/
 
+Give it some time to compile all the files.
+
 Build the executable:
 	
 	gcc -Wall -Wextra -Werror -I./libft/includes -L./libft -lft -o gnl get_next_line.c main.c
@@ -59,7 +61,9 @@ Build the executable:
 Alright, the last command created a `gnl` executable in your directory. Now test it with:
 
 	./gnl m83.txt
-	
+
+It should read the whole file to you. Kinda like a basic `cat` implementation.
+
 **NOTE:** The lyrics in the text file are from [Claudia Lewis][15] by [M83][16] ;)
 
 ### How do I try it out?
