@@ -1,5 +1,5 @@
 *.o
-*.txt
 a.out*
 *.a
 ._*
+gnl
