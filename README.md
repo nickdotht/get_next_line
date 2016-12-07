@@ -17,7 +17,7 @@ Disclaimer: *There [are][10] [so][11] [many][12] [easier][13] methods of doing t
 
 ### Why would I use/try it?
 
-You probably will never have to use this funciton if you are not a 42 student. The goal is to get better at C. As I said above, you can only use those three standard library functions:
+You probably will never have to use this function if you are not a 42 student. The goal is to get better at C. As I said above, you can only use those three standard library functions:
 
 * read
 * malloc
