@@ -48,9 +48,9 @@ Give it some time to compile all the files.
 
 Build the executable:
 	
-	gcc -Wall -Wextra -Werror -I./libft/includes -L./libft -lft -o gnl get_next_line.c main.c
+	gcc -Wall -Wextra -Werror -I./libft/includes/ -L./libft -lft -o gnl get_next_line.c main.c
 
--I tells the compiler where your header files are. `./libft/includes` in this case
+-I tells the compiler where your library header files are. `./libft/includes/` in this case
 
 -L tells it where your library resides. `./libft` here
 
@@ -71,6 +71,23 @@ It should read the whole file to you. Kinda like a basic `cat` implementation.
 If you are a beginner to intermediate programmer and want to hone your skills in C, I highly recommend you to give this project a try.
 
 To do that, you just have to read the [project instructions][1], some stuffs on there might be confusing if you are not a 42 student, but don't mind them. Just make sure you use only `read`, `malloc`, `free` as your only available standard library functions and my/your [libft][14] functions.
+
+I created a folder named `gnl-sample` for you, it has the required files plus the testing files.
+
+All you need to do now is cd into it and clone my [Libft][14], if you already made your own Libft, perfect, use it:
+
+	cd gnl-sample
+	git clone https://github.com/r4meau/libft
+	
+Build the libft library and you're done:
+	
+	make -C libft/ copy
+	make -C libft/
+	make -C libft/ clean
+
+**NOTE:** Just a reminder, in my Libft repo, the header file `libft.h` is in the `libft/` directory, not `libft/includes/`, so when you build your project, use this instead:
+
+	gcc -Wall -Wextra -Werror -I./libft/ -L./libft -lft -o gnl get_next_line.c main.c
 
 The instructions are clear enough, so I won't add anything else. If you have any questions, feel free to [ask me][8].
 
