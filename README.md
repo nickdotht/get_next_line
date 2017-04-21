@@ -1,4 +1,4 @@
-# get_next_line - jrameau @42Born2Code
+# get_next_line - @42Born2Code
 
 A C function that reads any valid file line by line until the end.
 
