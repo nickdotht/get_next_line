@@ -113,6 +113,10 @@ Then press `5` to select tests for get_next_line, press `1` to install [moulites
 
 That's it! If you're having some problems, just [send me a tweet][8]. If you think your problem is due to my code or this README, [create a new issue][9]. I'll definitely check it out.
 
+## Sponsors
+
+<a href="https://app.codesponsor.io/link/Fo4iMpT8bBWXwb54Lj7DPwqL/R4meau/get_next_line" rel="nofollow"><img src="https://app.codesponsor.io/embed/Fo4iMpT8bBWXwb54Lj7DPwqL/R4meau/get_next_line.svg" style="width: 888px; height: 68px;" alt="Sponsor" /></a>
+
 Enjoy.
 
 [1]: https://github.com/R4meau/get_next_line/blob/master/get_next_line.en.pdf "get_next_line PDF"
